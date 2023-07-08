@@ -16,8 +16,8 @@ class settings:
     addr_path = "/dev/ttyUSB0"
     port_speed = 115200
     t_file = ""
-    buffer_tx = ""
-    buffer_rx = ""
+    buffer_tx = bytearray()
+    buffer_rx = bytearray()
 
 # --------------------------------------------------------------------------------------------------- transport_type_get
 #
@@ -81,6 +81,7 @@ def transport_open():
                                                 xonxoff = False
                                                )
                 if ( settings.t_file != "" ):
+                    l.log( l.TRACE, "transport open for SERIAL successfull" )
                     return ( True )
                 else:
                     return ( False )
@@ -92,6 +93,7 @@ def transport_open():
                 settings.t_file = socket.socket( socket.AF_INET, socket.SOCK_STREAM )
                 if ( settings.t_file != "" ):
                     settings.t_file.connect( ( settings.addr_path, settings.port_speed ) )
+                    l.log( l.TRACE, "transport open for SOCKET successfull" )
                     return ( True )
                 else:
                     return ( False )
@@ -131,34 +133,34 @@ def transport_close():
 #
 # ----------------------------------------------------------------------------------------------------------------------
 def get_length_tx():
-    return ( len( settings.buff_tx ) )
+    return ( len( settings.buffer_tx ) )
 
 # -------------------------------------------------------------------------------------------------------- get_length_rx
 #
 # ----------------------------------------------------------------------------------------------------------------------
 def get_length_rx():
-    return ( len( settings.buff_rx ) )
+    return ( len( settings.buffer_rx ) )
 
 # ------------------------------------------------------------------------------------------------------------- put_char
 #
 # ----------------------------------------------------------------------------------------------------------------------
 def put_char( new_char ):
-    settings.buff_tx.append( new_char )
+    settings.buffer_tx.append( ord( new_char ) )
 
 # -------------------------------------------------------------------------------------------------------------- put_str
 #
 # ----------------------------------------------------------------------------------------------------------------------
 def put_str( new_string ):
-    settings.buff_tx.extend( new_string )
+    settings.buffer_tx.extend( new_string )
     
 # ------------------------------------------------------------------------------------------------------------- get_char
 #
 # ----------------------------------------------------------------------------------------------------------------------
 def get_char():
     ch = b'/x00'
-    if ( len( settings.buff_rx ) > 0 ):
-        ch = settings.buff_rx[ 0 : 1 ]
-        del settings.buff_rx[ 0 : 1 ]
+    if ( len( settings.buffer_rx ) > 0 ):
+        ch = settings.buffer_rx[ 0 : 1 ]
+        del settings.buffer_rx[ 0 : 1 ]
     return ( ch )
 
 # -------------------------------------------------------------------------------------------------------------- get_str
@@ -166,9 +168,9 @@ def get_char():
 # ----------------------------------------------------------------------------------------------------------------------
 def get_str():
     new_string = bytearray()
-    if ( len( settings.buff_rx ) > 0 ):
-        new_string.extend( settings.buff_rx[ 0 : 1 ] )
-        del settings.buff_rx[ 0 : 1 ]
+    if ( len( settings.buffer_rx ) > 0 ):
+        new_string.extend( settings.buffer_rx[ 0 : 1 ] )
+        del settings.buffer_rx[ 0 : 1 ]
     return ( ch )
 
 # -------------------------------------------------------------------------------------------------------------- service
@@ -178,15 +180,15 @@ def service():
     if ( settings.t_file != "" ):
         if ( settings.t_type == SERIAL ):
             while ( settings.t_file.inWaiting() > 0 ):
-                settings.buff_rx += settings.t_file.read( 1 )
-            while ( len( settings.buff_tx ) > 0 ):
-                settings.t_file.write( settings.buff_tx[ 0 : 1 ] )
-                del settings.buff_tx[ 0 : 1 ]
+                settings.buffer_rx += settings.t_file.read( 1 )
+            while ( len( settings.buffer_tx ) > 0 ):
+                settings.t_file.write( settings.buffer_tx[ 0 : 1 ] )
+                del settings.buffer_tx[ 0 : 1 ]
         elif ( settings.t_type == SOCKET ):
-            settings.buff_rx += settings.t_file.recv( 1 )
-            while ( len( settings.buff_tx ) > 0 ):
-                settings.t_file.send( settings.buff_tx[ 0 : 1 ] )
-                del settings.buff_tx[ 0 : 1 ]
+            settings.buffer_rx += settings.t_file.recv( 1 )
+            while ( len( settings.buffer_tx ) > 0 ):
+                settings.t_file.send( settings.buffer_tx[ 0 : 1 ] )
+                del settings.buffer_tx[ 0 : 1 ]
         else:
             l.log( l.ERROR, "can't service an unknown transport type" )
 
