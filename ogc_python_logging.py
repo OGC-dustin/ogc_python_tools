@@ -1,7 +1,13 @@
 # ----------------------------------------------------------------------------------------------------------------------
 # OGC.Engineering
-#     Custom Python 3 Logging Library - Threshold and format log entries to console, file, and queue
+#     Custom Python 3 Logging Library - Threshold and format log entries to console, file, and queue for application use
+#
+# V1.0 - PC use with console, file and queue operations in place
+#
 # ----------------------------------------------------------------------------------------------------------------------
+__version__ = '1.0.0'
+__author__ = 'dustin ( at ) ogc.engineering'
+
 import datetime
 import queue
 import os
@@ -21,8 +27,8 @@ TRACE = 6
 LEVEL_STRING = [ "FATAL", "ERROR", "WARNING", "NOTICE", "INFO", "DEBUG", "TRACE" ]
 
 class settings:
-    flag_verbosity_override = False
     level_threshold = INFO
+    flag_verbosity_override = False
     flag_storage_use = False
     storage = queue.Queue( maxsize = 0 ) # 0 = infinite size
     file = "" # used to track file usage
@@ -112,7 +118,12 @@ def log_file_set( path ):
     settings.file = path
 
 # ----------------------------------------------------------------------------------------------------------------------
-#
+#                                                                                                      Main logging call
+# Returns:
+#     Boolean - Success of logging process
+# Inputs:
+#     Enumeration - level ( FATAL, ERROR, WARNING, NOTICE, INFO, DEBUG, TRACE )
+#     string - string to be logged
 # ----------------------------------------------------------------------------------------------------------------------
 def log( level, string ):
     # test thresholding
@@ -142,7 +153,7 @@ def log( level, string ):
         return ( False )
 
 # ----------------------------------------------------------------------------------------------------------------------
-#
+#                                                                                                           Unit Testing
 # ----------------------------------------------------------------------------------------------------------------------
 if __name__ == "__main__":
     error_count = 0
@@ -249,4 +260,3 @@ if __name__ == "__main__":
     else:
         log( INFO, "PASSED" )
     log( NOTICE, "--------------------------------------------------------------------------------" )
-
