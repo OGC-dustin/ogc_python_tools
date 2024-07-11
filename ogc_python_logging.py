@@ -130,7 +130,7 @@ def log( level, string ):
     if ( ( True == settings.flag_verbosity_override ) or ( level <= settings.level_threshold ) ):
         now = datetime.datetime.now()
         temp = "%10s | %s | %s\n" % ( LEVEL_STRING[ level ], now.strftime( "%Y%m%d %H:%M:%S.%f" ), string.rstrip() )
-        print( temp.rstrip() )
+        print( temp.rstrip(), flush = True )
         if ( True == settings.flag_storage_use ):
             storage_push( temp )
         if ( settings.file != "" ):
