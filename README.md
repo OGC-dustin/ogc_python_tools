@@ -49,3 +49,8 @@ import ogc_python_tools.ogc_python_logging as l
     * default logging to console
     * optional logging to file
     * optional logging to a queue for application handling
+
+## ogc_python_can_listener and ogc_python_can_writer
+* Basic CAN tools for embedded Linux systems
+    * Includes above logging library to allow log to console and optional file
+    * allows listening and writing of simple 8 byte CAN messages
