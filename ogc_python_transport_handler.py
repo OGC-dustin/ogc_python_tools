@@ -2,6 +2,9 @@
 # OGC.Engineering
 #     Custom Python 3 Transport Handler - Abstracting socket or serial transport details
 # ----------------------------------------------------------------------------------------------------------------------
+__version__ = '0.0.0'
+__author__ = 'dustin ( at ) ogc.engineering'
+
 import socket
 import serial
 import ogc_python_logging as l
