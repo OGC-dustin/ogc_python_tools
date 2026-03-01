@@ -8,6 +8,8 @@ Developer contact - dustin ( at ) ogc.engineering
     - Create reusable python tools to achieve common tasks for anyone to use
 * Clone
     - Navigate to your project repository and add ogc-python-tools as a submodule
+* Use "-h" command line option for the most up to date features of tools
+
 ```
 git submodule add https://github.com/OGC-dustin/ogc_python_tools.git
 ```
@@ -16,16 +18,17 @@ git submodule add https://github.com/OGC-dustin/ogc_python_tools.git
 git clone <however_you_clone_your_repo>
 git submodule update --init
 ```
-* Run unit test by calling the library file directly
+* For libraries, run unit test by calling the library file directly
+* For tools, use standalone or use builtin functions as needed in your own applications
 ```
-python3 <path/to/library_of_interest>.py
+python3 <path/to/tool_or_library_of_interest>.py
 ```
 * Import into your python3 project 
 ```
 import ogc_python_tools.ogc_python_logging as l
 ```
 
-# Tools
+# Libraries
 
 ## ogc_python_logging
 * Customized logging library:
@@ -47,10 +50,17 @@ import ogc_python_tools.ogc_python_logging as l
         - TRACE - Every step inbetween use to "trace" a program through every detail of operation
             * Typically only used during develpoment or major debugging events
     * default logging to console
-    * optional logging to file
+    * optional logging to file by setting 
     * optional logging to a queue for application handling
+
+# Tools
 
 ## ogc_python_can_listener and ogc_python_can_writer
 * Basic CAN tools for embedded Linux systems
     * Includes above logging library to allow log to console and optional file
     * allows listening and writing of simple 8 byte CAN messages
+
+## ogc_python_canopen_device_simulator and ogc_python_canopen_reader
+* Examples interacting with CANopen devices ( device simulator and reader demo )
+    * example_canopen_node.eds "Electronic Data Sheet" for device simulation
+        * https://www.csselectronics.com/pages/canopen-eds-file-electronic-data-sheet
