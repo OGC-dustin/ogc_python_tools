@@ -64,3 +64,6 @@ import ogc_python_tools.ogc_python_logging as l
 * Examples interacting with CANopen devices ( device simulator and reader demo )
     * example_canopen_node.eds "Electronic Data Sheet" for device simulation
         * https://www.csselectronics.com/pages/canopen-eds-file-electronic-data-sheet
+
+## ogc_python_zmq_publisher and ogc_python_zmq_subscriber
+* Example of a PUB SUB pair using zmq for IPC straight from documentation
